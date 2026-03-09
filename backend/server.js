@@ -69,3 +69,11 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
+const corsOptions = {
+  origin: [
+    'https://kgl-enterprise-system.netlify.app/',  // Your Netlify URL
+    'http://localhost:5173'
+  ],
+  credentials: true
+};
