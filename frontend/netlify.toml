@@ -1,0 +1,277 @@
+# =============================================
+# KGL Enterprise System - Netlify Configuration
+# Frontend Deployment Settings
+# =============================================
+
+# =============================================
+# BUILD SETTINGS
+# =============================================
+[build]
+  # Base directory for the build (where package.json is located)
+  base = "frontend"
+  
+  # Command to build your site
+  command = "npm run build"
+  
+  # Directory to publish (relative to base)
+  publish = "dist"
+  
+  # Environment variables for build process
+  environment = { NODE_VERSION = "18", NPM_VERSION = "9" }
+
+# =============================================
+# BUILD ENVIRONMENT VARIABLES
+# =============================================
+[build.environment]
+  # Node.js version
+  NODE_VERSION = "18.17.0"
+  
+  # NPM version
+  NPM_VERSION = "9.6.7"
+  
+  # Build optimization
+  NODE_OPTIONS = "--max-old-space-size=4096"
+  
+  # Build flags
+  VITE_NETLIFY_BUILD = "true"
+
+# =============================================
+# REDIRECTS - Single Page Application Support
+# =============================================
+# Redirect all routes to index.html for SPA routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = true
+
+# API Proxy Redirects (for development - remove in production)
+[[redirects]]
+  from = "/api/*"
+  to = "http://localhost:3000/api/:splat"
+  status = 200
+  force = true
+  [redirects.conditions]
+    environment = "dev"
+
+# =============================================
+# HEADERS - Security and Caching
+# =============================================
+# Security Headers for all routes
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security Headers
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    
+    # Content Security Policy
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com https://fonts.googleapis.com https://www.googletagmanager.com;
+      style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com;
+      font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com;
+      img-src 'self' data: https:;
+      connect-src 'self' https://kgl-backend.onrender.com http://localhost:3000 https://api.kgl.co.ug;
+      frame-src 'none';
+      object-src 'none';
+    """
+    
+    # Cache Control for static assets
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache headers for JavaScript files
+[[headers]]
+  for = "/assets/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache headers for CSS files
+[[headers]]
+  for = "/assets/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Cache headers for images
+[[headers]]
+  for = "/assets/*.{png,jpg,jpeg,gif,webp,svg,ico}"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# No cache for HTML files
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# =============================================
+# FUNCTIONS - Serverless Functions (if needed)
+# =============================================
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# =============================================
+# SPLIT TESTING - A/B Testing Configuration
+# =============================================
+[split_tests]
+  # Example split test configuration
+  # [split_tests."new-dashboard"]
+  #   audience = "all"
+  #   default = "old"
+  #   
+  #   [split_tests."new-dashboard".branches]
+  #     [split_tests."new-dashboard".branches."new"]
+  #       weight = 10
+  #       [split_tests."new-dashboard".branches."new".context]
+  #         commands = ["npm run build:new"]
+
+# =============================================
+# DEPLOY CONTEXTS - Environment-specific settings
+# =============================================
+# Production environment
+[context.production]
+  environment = { VITE_API_URL = "https://kgl-backend.onrender.com/api" }
+  
+  [[context.production.headers]]
+    for = "/*"
+    [context.production.headers.values]
+      X-Robots-Tag = "index, follow"
+
+# Branch deploy previews
+[context.branch-deploy]
+  environment = { VITE_API_URL = "https://staging-api.kgl.co.ug/api" }
+
+# Deploy previews (for PRs)
+[context.deploy-preview]
+  environment = { VITE_API_URL = "https://staging-api.kgl.co.ug/api" }
+
+# Development environment
+[context.dev]
+  environment = { VITE_API_URL = "http://localhost:3000/api" }
+
+# =============================================
+# EDGE FUNCTIONS (if using Netlify Edge)
+# =============================================
+[edge_functions]
+  # Example edge function
+  # [edge_functions."auth"]
+  #   path = "/auth/*"
+
+# =============================================
+# PLUGINS - Netlify Build Plugins
+# =============================================
+# Sitemap plugin
+[[plugins]]
+  package = "@netlify/plugin-sitemap"
+  [plugins.inputs]
+    buildDir = "dist"
+    prettyURLs = true
+    exclude = ["/profile", "/settings"]
+
+# Critical CSS plugin
+[[plugins]]
+  package = "netlify-plugin-critical-css"
+  [plugins.inputs]
+    paths = ["/", "/dashboard", "/sales", "/inventory"]
+
+# Image optimization plugin
+[[plugins]]
+  package = "netlify-plugin-image-optim"
+  [plugins.inputs]
+    jpg_quality = 80
+    png_quality = 80
+    webp_quality = 75
+
+# =============================================
+# FORMS - Form Handling Configuration
+# =============================================
+[forms]
+  # Enable form detection
+  [forms.inspect]
+    inspectForForms = true
+
+# Contact form
+[[form.handlers]]
+  for = "contact"
+  [form.handlers.email]
+    to = "info@kgl.co.ug"
+    from = "noreply@kgl.co.ug"
+    subject = "New Contact Form Submission - KGL Enterprise"
+
+# Newsletter subscription
+[[form.handlers]]
+  for = "newsletter"
+  [form.handlers.email]
+    to = "newsletter@kgl.co.ug"
+    from = "noreply@kgl.co.ug"
+    subject = "New Newsletter Subscription"
+
+# =============================================
+# ASSET OPTIMIZATION
+# =============================================
+[build.processing]
+  skip_processing = false
+  
+  [build.processing.css]
+    bundle = true
+    minify = true
+  
+  [build.processing.js]
+    bundle = true
+    minify = true
+    sourcemap = false
+  
+  [build.processing.html]
+    pretty_url = true
+  
+  [build.processing.images]
+    compress = true
+
+# =============================================
+# CUSTOM DOMAIN SETTINGS
+# =============================================
+# [template]
+#   domain = "kgl.co.ug"
+
+# =============================================
+# BRANCH SETTINGS
+# =============================================
+# Main branch
+[build.branches.main]
+  publish = "dist"
+  command = "npm run build"
+
+# Staging branch
+[build.branches.staging]
+  publish = "dist"
+  command = "npm run build:staging"
+
+# Development branch
+[build.branches.dev]
+  publish = "dist"
+  command = "npm run build:dev"
+
+# =============================================
+# ENVIRONMENT VARIABLES (for reference)
+# =============================================
+# These should be set in Netlify dashboard:
+# VITE_API_URL=https://kgl-backend.onrender.com/api
+# VITE_APP_NAME=KGL Enterprise
+# VITE_DEFAULT_THEME=system
+# VITE_CURRENCY_SYMBOL=UGX
+# VITE_SUPPORT_EMAIL=support@kgl.co.ug
+# VITE_SESSION_TIMEOUT=30
+# VITE_TOAST_DURATION=5000
+# VITE_ITEMS_PER_PAGE=25
+
+# =============================================
+# ANALYTICS (if using Netlify Analytics)
+# =============================================
+[analytics]
+  enable = true
+  [analytics.settings]
+    track_pageviews = true
+    track_custom_events = true

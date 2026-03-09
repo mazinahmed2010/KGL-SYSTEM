@@ -1,0 +1,40 @@
+# ====================
+# KGL Enterprise System
+# Root .gitignore
+# ====================
+
+# ====================
+# Node.js / NPM
+# ====================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log*
+
+# ====================
+# Environment Files
+# ====================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging
+.env.production
+
+# ====================
+# Backend Specific
+# ====================
+backend/node_modules/
+backend/package-lock.json
+backend/.env
+backend/.env.*
+backend/dist/
+backend/build/
+backend/coverage/
+backend/.nyc_output/
+backend/*.log
+backend/pid
