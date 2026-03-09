@@ -1,11 +1,17 @@
 # 🌾 KGL-System
 
+
 Karibu Groceries Ltd – Enterprise Inventory & Sales Management System
 
+
 [![Vue.js](https://img.shields.io/badge/Vue.js-3.x-4FC08D?logo=vue.js)](https://vuejs.org/)
+
 [![Node.js](https://img.shields.io/badge/Node.js-18.x-339933?logo=node.js)](https://nodejs.org/)
+
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.x-47A248?logo=mongodb)](https://www.mongodb.com/)
+
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 
 ---
 
@@ -524,5 +530,6 @@ Technologies:
 - Express.js
 
 Location: Kiryandongo, Uganda.
-#   K G L - S Y S T E M  
+#   K G L - S Y S T E M 
+ 
  
