@@ -1285,9 +1285,7 @@ in the Software without restriction...
 
 ### Social Links
 - [GitHub](https://github.com/mazinahmed2010)
-- [LinkedIn](www.linkedin.com/in/
-mazin-ahmed-ibrahim-0b1959249
-)
+- [LinkedIn](https://linkedin.com/in/mazin-ahmed-ibrahim-0b1959249)
 
 ---
 
