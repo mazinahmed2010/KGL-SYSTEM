@@ -1,12 +1,33 @@
-const express = require("express")
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
 
-const {getInventory,addInventory} = require("../controllers/inventoryController")
+// Mock inventory data
+let inventory = [
+  { id: 1, name: 'Beans', type: 'Beans', tonnage: 5000, price: 3000 },
+  { id: 2, name: 'Maize', type: 'Grain Maize', tonnage: 8000, price: 2500 },
+  { id: 3, name: 'Cow peas', type: 'Cow peas', tonnage: 3000, price: 3500 },
+  { id: 4, name: 'G-nuts', type: 'G-nuts', tonnage: 2000, price: 5000 },
+  { id: 5, name: 'Soybeans', type: 'Soybeans', tonnage: 4000, price: 2800 }
+];
 
-const {protect,authorize} = require("../middleware/auth")
+// Get all inventory
+router.get('/', (req, res) => {
+  res.json(inventory);
+});
 
-router.get("/",protect,getInventory)
+// Get by branch
+router.get('/branch/:branch', (req, res) => {
+  // In a real app, filter by branch
+  res.json(inventory);
+});
 
-router.post("/",protect,authorize("Manager"),addInventory)
+// Get single item
+router.get('/:id', (req, res) => {
+  const item = inventory.find(i => i.id === parseInt(req.params.id));
+  if (!item) {
+    return res.status(404).json({ message: 'Item not found' });
+  }
+  res.json(item);
+});
 
-module.exports = router
+module.exports = router;

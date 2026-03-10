@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const { body, validationResult } = require('express-validator');
 
+// Mock users for demo
 const users = [
   {
     id: 1,
@@ -30,39 +30,28 @@ const users = [
   }
 ];
 
-const generateToken = (user) => {
-  return jwt.sign(
+// Login route
+router.post('/login', (req, res) => {
+  const { email, password } = req.body;
+  
+  const user = users.find(u => u.email === email && u.password === password);
+  
+  if (!user) {
+    return res.status(401).json({ message: 'Invalid email or password' });
+  }
+
+  const token = jwt.sign(
     { id: user.id, email: user.email, role: user.role },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET || 'fallback-secret-do-not-use-in-production',
     { expiresIn: '30d' }
   );
-};
 
-router.post('/login',
-  [
-    body('email').isEmail().normalizeEmail(),
-    body('password').isLength({ min: 6 })
-  ],
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
+  const { password: _, ...userWithoutPassword } = user;
+  
+  res.json({ ...userWithoutPassword, token });
+});
 
-    const { email, password } = req.body;
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid email or password' });
-    }
-
-    const token = generateToken(user);
-    const { password: _, ...userWithoutPassword } = user;
-    
-    res.json({ ...userWithoutPassword, token });
-  }
-);
-
+// Verify token
 router.get('/verify', (req, res) => {
   const token = req.headers.authorization?.split(' ')[1];
   
@@ -71,15 +60,8 @@ router.get('/verify', (req, res) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = users.find(u => u.id === decoded.id);
-    
-    if (!user) {
-      return res.status(401).json({ message: 'User not found' });
-    }
-
-    const { password, ...userWithoutPassword } = user;
-    res.json(userWithoutPassword);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret');
+    res.json({ valid: true, user: decoded });
   } catch (error) {
     res.status(401).json({ message: 'Invalid token' });
   }

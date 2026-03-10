@@ -1,6 +1,8 @@
 {
   "name": "kgl-backend",
   "version": "1.0.0",
+  "description": "KGL Enterprise System Backend",
+  "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"

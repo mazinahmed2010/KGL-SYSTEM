@@ -1,11 +1,29 @@
-const express = require("express")
+const express = require('express');
+const router = express.Router();
 
-const router = express.Router()
+// Mock sales
+let sales = [];
 
-const {createSale} = require("../controllers/saleController")
+// Create sale
+router.post('/', (req, res) => {
+  const newSale = {
+    id: sales.length + 1,
+    ...req.body,
+    date: new Date()
+  };
+  sales.push(newSale);
+  res.status(201).json(newSale);
+});
 
-const {protect,authorize} = require("../middleware/auth")
+// Get all sales
+router.get('/', (req, res) => {
+  res.json(sales);
+});
 
-router.post("/",protect,authorize("Manager","Agent"),createSale)
+// Get sales summary
+router.get('/summary', (req, res) => {
+  const total = sales.reduce((sum, sale) => sum + (sale.amountPaid || 0), 0);
+  res.json({ totalRevenue: total, count: sales.length });
+});
 
-module.exports = router
+module.exports = router;

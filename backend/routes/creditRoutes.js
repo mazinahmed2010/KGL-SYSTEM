@@ -1,13 +1,29 @@
-const express = require("express")
+const express = require('express');
+const router = express.Router();
 
-const router = express.Router()
+// Mock credits
+let credits = [];
 
-const {createCredit,getCredits} = require("../controllers/creditController")
+// Create credit sale
+router.post('/', (req, res) => {
+  const newCredit = {
+    id: credits.length + 1,
+    ...req.body,
+    date: new Date()
+  };
+  credits.push(newCredit);
+  res.status(201).json(newCredit);
+});
 
-const {protect,authorize} = require("../middleware/auth")
+// Get all credits
+router.get('/', (req, res) => {
+  res.json(credits);
+});
 
-router.post("/",protect,authorize("Manager","Agent"),createCredit)
+// Get credit summary
+router.get('/summary', (req, res) => {
+  const total = credits.reduce((sum, credit) => sum + (credit.amountDue || 0), 0);
+  res.json({ totalOutstanding: total, count: credits.length });
+});
 
-router.get("/",protect,getCredits)
-
-module.exports = router
+module.exports = router;
