@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import api from '@/services/api'
 
 export const useProductStore = defineStore('product', () => {
-  // State
   const products = ref([])
   const sales = ref([])
   const procurements = ref([])
@@ -23,7 +23,51 @@ export const useProductStore = defineStore('product', () => {
     }
   }
 
-  // Update stock
+  // API calls
+  async function fetchProducts() {
+    loading.value = true
+    error.value = null
+    try {
+      const response = await api.get('/inventory')
+      products.value = response.data
+    } catch (err) {
+      error.value = 'Failed to fetch products'
+      console.error(err)
+      // Fallback to sample data
+      initializeSampleData()
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function fetchSales() {
+    try {
+      const response = await api.get('/sales')
+      sales.value = response.data
+    } catch (err) {
+      console.error('Failed to fetch sales:', err)
+    }
+  }
+
+  async function fetchProcurements() {
+    try {
+      const response = await api.get('/procurement')
+      procurements.value = response.data
+    } catch (err) {
+      console.error('Failed to fetch procurements:', err)
+    }
+  }
+
+  async function fetchCredits() {
+    try {
+      const response = await api.get('/credit')
+      credits.value = response.data
+    } catch (err) {
+      console.error('Failed to fetch credits:', err)
+    }
+  }
+
+  // Local stock updates
   function updateLocalStock(productId, quantity, operation = 'sale') {
     const product = products.value.find(p => p.id === productId)
     if (!product) return false
@@ -35,14 +79,6 @@ export const useProductStore = defineStore('product', () => {
       product.tonnage += quantity
     }
     return true
-  }
-
-  // Add product
-  function addLocalProduct(product) {
-    products.value.push({
-      id: Date.now(),
-      ...product
-    })
   }
 
   // Getters
@@ -66,38 +102,19 @@ export const useProductStore = defineStore('product', () => {
     return products.value.filter(p => p.tonnage > 0)
   })
 
-  // API methods (mock for now)
-  async function fetchProducts() {
-    loading.value = true
-    error.value = null
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500))
-      initializeSampleData()
-    } catch (err) {
-      error.value = 'Failed to fetch products'
-      console.error(err)
-    } finally {
-      loading.value = false
-    }
-  }
-
   return {
-    // State
     products,
     sales,
     procurements,
     credits,
     loading,
     error,
-    
-    // Methods
     initializeSampleData,
-    updateLocalStock,
-    addLocalProduct,
     fetchProducts,
-    
-    // Getters
+    fetchSales,
+    fetchProcurements,
+    fetchCredits,
+    updateLocalStock,
     totalTonnage,
     totalInventoryValue,
     lowStockItems,

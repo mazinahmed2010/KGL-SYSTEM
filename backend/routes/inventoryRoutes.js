@@ -15,10 +15,22 @@ router.get('/', (req, res) => {
   res.json(inventory);
 });
 
-// Get by branch
+// Get inventory by branch
 router.get('/branch/:branch', (req, res) => {
   // In a real app, filter by branch
   res.json(inventory);
+});
+
+// Get low stock items
+router.get('/low-stock', (req, res) => {
+  const lowStock = inventory.filter(item => item.tonnage < 1000 && item.tonnage > 0);
+  res.json(lowStock);
+});
+
+// Get out of stock items
+router.get('/out-of-stock', (req, res) => {
+  const outOfStock = inventory.filter(item => item.tonnage === 0);
+  res.json(outOfStock);
 });
 
 // Get single item

@@ -4,11 +4,7 @@
       <MainLayout />
     </template>
     <template v-else>
-      <div class="login-wrapper">
-        <router-view />
-        <!-- Footer only shows on login page if you want it -->
-        <!-- <Footer v-if="showFooterOnLogin" /> -->
-      </div>
+      <router-view />
     </template>
   </div>
 </template>
@@ -16,15 +12,10 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { useUserStore } from '@/stores/userStore'
 import MainLayout from '@/components/MainLayout.vue'
-// import Footer from '@/components/Footer.vue' // Uncomment if you want footer on login
 
 const route = useRoute()
-const userStore = useUserStore()
-
 const isLoginPage = computed(() => route.path === '/login')
-const showFooterOnLogin = computed(() => false) // Set to true if you want footer on login
 </script>
 
 <style>
@@ -56,18 +47,6 @@ body {
   color: var(--text-dark);
 }
 
-.app-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.login-wrapper {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
 /* Scrollbar Styles */
 ::-webkit-scrollbar {
   width: 8px;
@@ -85,46 +64,5 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--dark-green);
-}
-
-/* Utility Classes */
-.text-center {
-  text-align: center;
-}
-
-.mt-2 {
-  margin-top: 10px;
-}
-
-.mt-3 {
-  margin-top: 15px;
-}
-
-.mt-4 {
-  margin-top: 20px;
-}
-
-.mb-2 {
-  margin-bottom: 10px;
-}
-
-.mb-3 {
-  margin-bottom: 15px;
-}
-
-.mb-4 {
-  margin-bottom: 20px;
-}
-
-.p-2 {
-  padding: 10px;
-}
-
-.p-3 {
-  padding: 15px;
-}
-
-.p-4 {
-  padding: 20px;
 }
 </style>

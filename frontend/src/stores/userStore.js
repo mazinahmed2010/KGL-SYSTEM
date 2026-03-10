@@ -2,11 +2,9 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
-  // State
   const currentUser = ref(null)
   const token = ref(localStorage.getItem('kgl-token') || '')
 
-  // Actions
   function login(userData) {
     currentUser.value = {
       id: userData.id || Date.now(),
@@ -39,12 +37,16 @@ export const useUserStore = defineStore('user', () => {
   function restoreSession() {
     const savedUser = localStorage.getItem('kgl-user')
     if (savedUser) {
-      currentUser.value = JSON.parse(savedUser)
-      token.value = currentUser.value.token || ''
+      try {
+        currentUser.value = JSON.parse(savedUser)
+        token.value = currentUser.value.token || ''
+      } catch (e) {
+        console.error('Failed to restore session:', e)
+        logout()
+      }
     }
   }
 
-  // Getters
   const isLoggedIn = computed(() => currentUser.value !== null)
   const userRole = computed(() => currentUser.value?.role || null)
   const userEmail = computed(() => currentUser.value?.email || null)
@@ -56,17 +58,12 @@ export const useUserStore = defineStore('user', () => {
   const isDirector = computed(() => currentUser.value?.role === 'Director')
 
   return {
-    // State
     currentUser,
     token,
-    
-    // Actions
     login,
     logout,
     setBranch,
     restoreSession,
-    
-    // Getters
     isLoggedIn,
     userRole,
     userEmail,

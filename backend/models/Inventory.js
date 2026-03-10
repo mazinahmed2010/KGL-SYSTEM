@@ -1,31 +1,54 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose');
 
 const inventorySchema = new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-    },
-    type:{
-        type:String,
-        required:true
-    },
-    tonnage:{
-        type:Number,
-        required:true
-    },
-    price:{
-        type:Number,
-        required:true
-    },
-    branch:{
-        type:String,
-        enum:["Maganjo","Matugga"],
-        required:true
-    },
-    createdAt:{
-        type:Date,
-        default:Date.now
-    }
-})
+  produceName: {
+    type: String,
+    required: [true, 'Produce name is required'],
+    unique: true,
+    trim: true
+  },
+  produceType: {
+    type: String,
+    required: [true, 'Produce type is required'],
+    enum: ['Beans', 'Grain Maize', 'Cow peas', 'G-nuts', 'Soybeans']
+  },
+  availableStock: {
+    type: Number,
+    required: [true, 'Stock quantity is required'],
+    min: [0, 'Stock cannot be negative']
+  },
+  sellingPrice: {
+    type: Number,
+    required: [true, 'Selling price is required'],
+    min: [1000, 'Price must be at least 1000 UGX']
+  },
+  branch: {
+    type: String,
+    required: [true, 'Branch is required'],
+    enum: ['Maganjo', 'Matugga']
+  },
+  lastUpdated: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  timestamps: true
+});
 
-module.exports = mongoose.model("Inventory",inventorySchema)
+// Update timestamp on save
+inventorySchema.pre('save', function(next) {
+  this.lastUpdated = Date.now();
+  next();
+});
+
+// Virtual for low stock status
+inventorySchema.virtual('isLowStock').get(function() {
+  return this.availableStock < 1000;
+});
+
+// Virtual for out of stock status
+inventorySchema.virtual('isOutOfStock').get(function() {
+  return this.availableStock <= 0;
+});
+
+module.exports = mongoose.model('Inventory', inventorySchema);

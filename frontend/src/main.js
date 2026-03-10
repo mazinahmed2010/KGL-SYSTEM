@@ -14,7 +14,13 @@ app.use(router)
 app.use(Toast, {
   position: 'top-right',
   timeout: 5000,
-  closeOnClick: true
+  closeOnClick: true,
+  pauseOnFocusLoss: true,
+  pauseOnHover: true,
+  draggable: true,
+  icon: true,
+  transition: 'Vue-Toastification__fade',
+  maxToasts: 5
 })
 
 app.mount('#app')
