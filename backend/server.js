@@ -1,79 +1,51 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
+const path = require('path');
 require('dotenv').config();
-
-const connectDB = require('./config/database');
-const authRoutes = require('./routes/authRoutes');
-const inventoryRoutes = require('./routes/inventoryRoutes');
-const procurementRoutes = require('./routes/procurementRoutes');
-const saleRoutes = require('./routes/saleRoutes');
-const creditRoutes = require('./routes/creditRoutes');
 
 const app = express();
 
-// Middleware
-app.use(helmet());
-app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+// CORS configuration - allow all origins in development
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || '*',
   credentials: true
-}));
-app.use(morgan('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+};
+app.use(cors(corsOptions));
 
-// Connect to MongoDB Atlas
-connectDB();
+app.use(express.json());
+
+// MongoDB connection - Railway provides MONGO_URL automatically
+const MONGODB_URI = process.env.MONGO_URL || process.env.MONGODB_URI;
+mongoose.connect(MONGODB_URI)
+  .then(() => console.log('✅ Connected to MongoDB'))
+  .catch(err => console.error('❌ MongoDB error:', err));
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/inventory', inventoryRoutes);
-app.use('/api/procurement', procurementRoutes);
-app.use('/api/sales', saleRoutes);
-app.use('/api/credit', creditRoutes);
+app.use('/api/auth', require('./routes/authRoutes'));
+app.use('/api/inventory', require('./routes/inventoryRoutes'));
+app.use('/api/procurement', require('./routes/procurementRoutes'));
+app.use('/api/sales', require('./routes/saleRoutes'));
+app.use('/api/credit', require('./routes/creditRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  const dbState = mongoose.connection.readyState;
-  const dbStatus = {
-    0: 'disconnected',
-    1: 'connected',
-    2: 'connecting',
-    3: 'disconnecting'
-  };
-  
   res.json({ 
-    status: 'OK',
+    status: 'OK', 
     timestamp: new Date(),
-    database: dbStatus[dbState] || 'unknown',
-    collections: Object.keys(mongoose.connection.collections).length
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
   });
 });
 
-// Error handler
-app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.stack);
-  res.status(err.status || 500).json({
-    message: err.message || 'Internal server error'
+// In production, serve frontend static files
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
   });
-});
-
-// 404 handler
-app.use('*', (req, res) => {
-  res.status(404).json({ message: 'Route not found' });
-});
+}
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
-
-const corsOptions = {
-  origin: [
-    'https://kgl-enterprise-system.netlify.app/',  // Your Netlify URL
-    'http://localhost:5173'
-  ],
-  credentials: true
-};
