@@ -1,376 +1,299 @@
 # 🌾 KGL Enterprise System
 
-**Karibu Groceries Ltd – Enterprise Inventory & Sales Management System**
+### Karibu Groceries Ltd – Digital Inventory & Sales Platform
 
-A full-stack web application built with **Vue.js, Node.js, Express, and MongoDB** to digitize the operations of Karibu Groceries Ltd, a wholesale distributor dealing in cereals.
+[![Live Demo](https://img.shields.io/badge/demo-live-brightgreen?style=for-the-badge&logo=netlify)](https://kgl-enterprise-system.netlify.app/login)
+[![Backend API](https://img.shields.io/badge/backend-render-blue?style=for-the-badge&logo=render)](https://kgl-system-3.onrender.com)
+[![GitHub](https://img.shields.io/badge/github-repo-black?style=for-the-badge&logo=github)](https://github.com/mazinahmed2010/KGL-SYSTEM)
 
----
+A **full-stack enterprise inventory and sales management system** built for **Karibu Groceries Ltd**, a wholesale produce distributor with branches in **Maganjo** and **Matugga**.
 
-# 📖 Overview
-
-Karibu Groceries Ltd previously recorded business operations in **manual black books**, which caused:
-
-- Data loss
-- Slow reporting
-- Calculation errors
-- Lack of stock visibility
-
-The **KGL Enterprise System** solves these problems by providing a **digital platform for procurement, inventory, and sales management**.
+The system replaces paper-based processes with a **real-time digital platform for procurement, inventory tracking, sales management, and credit monitoring**.
 
 ---
 
-# 🏢 Business Context
+# 🌐 Live Application
 
-KGL operates **two branches**:
+Frontend
+https://kgl-enterprise-system.netlify.app/login
 
-- Maganjo Branch
-- Matugga Branch
+Backend API
+https://kgl-system-3.onrender.com
 
-The system allows managers and agents to:
+API Health Check
+https://kgl-system-3.onrender.com/api/health
 
-✔ Track inventory in real time
-✔ Record procurement transactions
-✔ Manage produce sales
-✔ Monitor stock levels
-✔ Generate executive reports
-
----
-
-# ✨ Features
-
-## 🔐 Authentication
-
-- Secure login with **JWT authentication**
-- Password hashing using **bcrypt**
-- Role-based access control
-
-User roles:
-
-- Manager
-- Agent
-- Director
+⚠️ Backend hosted on Render free tier.
+First request may take **30–60 seconds** to wake up.
 
 ---
 
-## 📦 Procurement Management
+# 🖼️ System Screenshots
 
-Managers can record produce purchases.
+## Login Page
+
+![Login Page](screenshots/login.png)
+
+Secure login with role-based authentication.
+
+---
+
+## Manager Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+Provides quick access to:
+
+• Inventory overview
+• Sales summary
+• Procurement statistics
+• Branch performance
+
+---
+
+## Inventory Management
+
+![Inventory](screenshots/inventory.png)
 
 Features:
 
-- Dealer information validation
-- Automatic inventory updates
-- Branch tracking
-- Procurement history
+• Real-time stock levels
+• Low-stock alerts
+• Branch-specific inventory
+• Stock availability validation
 
 ---
 
-## 💰 Sales Management
+## Procurement Module
 
-Agents can record sales quickly.
+![Procurement](screenshots/procurement.png)
 
-Features:
+Managers can:
 
-- Real-time stock checking
-- Multiple payment methods
-- Automatic inventory deduction
-
-Payment methods:
-
-- Cash
-- Mobile Money
-- Bank Transfer
+• Add new stock
+• Record supplier deliveries
+• Validate minimum purchase quantities
 
 ---
 
-## 📊 Inventory Management
+## Sales Module
 
-Managers can monitor stock levels in real time.
+![Sales](screenshots/sales.png)
 
-Features:
+Sales agents can:
 
-- Inventory listing
-- Low-stock alerts
-- Out-of-stock alerts
-- Stock valuation
+• Process cash sales
+• Check stock availability
+• Automatically reduce inventory
 
 ---
 
-## 👑 Executive Dashboard
+## Credit Sales
+
+![Credit](screenshots/credit.png)
+
+Allows tracking of:
+
+• Customer credit purchases
+• National ID validation
+• Due date monitoring
+
+---
+
+## Executive Reports
+
+![Reports](screenshots/reports.png)
 
 Directors can view:
 
-- Total sales
-- Stock health
-- Branch performance
-- Key business metrics
+• Aggregated revenue reports
+• Branch comparison analytics
+• Sales summaries
 
 ---
 
-# 🛠️ Technology Stack
+# ✨ Key Features
 
-## Frontend
+## Role-Based Access Control
 
-- Vue.js 3
-- Vue Router
-- Pinia
-- Axios
-- Vite
-- Vue Toastification
-- Font Awesome
+Manager
+Full system access
+
+Agent
+Sales and credit operations
+
+Director
+View reports and analytics
 
 ---
 
-## Backend
+## Business Modules
 
-- Node.js
-- Express.js
-- MongoDB
-- Mongoose
-- JSON Web Token (JWT)
-- bcrypt
-- Express Validator
-- Helmet
-- CORS
+Procurement
+Stock intake with validation
+
+Inventory Management
+Real-time stock tracking
+
+Sales Processing
+Immediate stock deduction
+
+Credit Sales
+Customer credit monitoring
+
+Executive Dashboard
+Analytics and reporting
+
+---
+
+# 🛠 Tech Stack
+
+Frontend
+
+Vue.js 3
+Pinia
+Vue Router
+Axios
+Vue Toastification
+
+Backend
+
+Node.js
+Express.js
+MongoDB
+Mongoose
+JWT Authentication
+bcryptjs
+
+Deployment
+
+Frontend → Netlify
+Backend → Render
+
+---
+
+# 🔐 Security
+
+JWT authentication
+Password hashing
+Input validation
+Route protection
+Role-based authorization
 
 ---
 
 # 📁 Project Structure
 
-```
 kgl-enterprise-system
-│
-├── backend
-│   ├── server.js
-│   ├── config
-│   ├── controllers
-│   ├── middleware
-│   ├── models
-│   └── routes
-│
-├── frontend
-│   ├── index.html
-│   ├── vite.config.js
-│   ├── netlify.toml
-│   └── src
-│       ├── components
-│       ├── views
-│       ├── router
-│       ├── stores
-│       └── services
-│
-└── README.md
-```
+
+backend
+• controllers
+• models
+• routes
+• middleware
+• server.js
+
+frontend
+• components
+• views
+• stores
+• router
+• services
+
+README.md
 
 ---
 
-# ⚡ Quick Start
+# 🚀 Running Locally
 
-Clone the repository:
+Backend
 
-```
-git clone https://github.com/yourusername/kgl-enterprise-system.git
-```
-
-Navigate to project:
-
-```
-cd kgl-enterprise-system
-```
-
----
-
+cd backend
 npm install
 npm run dev
 
-Backend runs on:
-
-```
+Server runs on
 
 http://localhost:3000
 
-```
+---
 
--
+Frontend
 
-```
+cd frontend
+npm install
+npm run dev
 
-Frontend runs on
+App runs on
 
 http://localhost:5173
 
-```
+---
+
+# 🧪 Demo Credentials
+
+Manager
+[manager@kgl.com](mailto:manager@kgl.com)
+manager123
+
+Agent
+[agent@kgl.com](mailto:agent@kgl.com)
+agent123
+
+Director
+[director@kgl.com](mailto:director@kgl.com)
+director123
 
 ---
 
-# ⚙️ Environment Variables
+# 🧪 How to Test
 
-## Backend `.env`
+1 Open the live system
 
-```
+https://kgl-enterprise-system.netlify.app/login
 
-PORT=3000
-NODE_ENV=development
+2 Login with demo credentials
 
-MONGODB_URI=your_mongodb_connection_string
+3 Test modules
 
-JWT_SECRET=your_secret_key
-JWT_EXPIRE=30d
+Manager
+Add procurement
+Manage inventory
 
-```
+Agent
+Process sales
+Record credit
 
----
-
-## Frontend `.env`
-
-```
-
-## VITE_API_URL=http://localhost:3000/api
-
-# ☁️ Deployment
-
-## Backend Deployment
-
-Backend API is deployed on **Railway**.
-
-Production API URL:
-
-```
-
-https://kgl-enterprise-production.up.railway.app/api
-
-```
+Director
+View reports
 
 ---
 
-## Frontend Deployment
+# 🚀 Deployment
 
-Frontend is deployed on **Netlify**.
+Frontend
+Netlify
 
-Live Website:
+Backend
+Render
 
-```
-
-https://kgl-enterprise.netlify.app
-
-```
+Both automatically deploy from GitHub.
 
 ---
 
-# 🔍 Test API
+# 👨‍💻 Author
 
-Example request:
+Mazin Ahmed Ibrahim
 
-```
-
-GET https://kgl-enterprise-production.up.railway.app/api
-
-```
-
-Expected response:
-
-```
-
-{
-"status": "KGL API Running"
-}
-
-```
+GitHub
+https://github.com/mazinahmed2010
 
 ---
 
-# 📊 System Architecture
+# ⭐ Support
 
-```
-
-Users
-│
-▼
-Frontend (Netlify)
-│
-▼
-Backend API (Railway)
-│
-▼
-MongoDB Atlas Database
-
-```
+If you like this project please **give it a star on GitHub**.
 
 ---
 
-# 🚀 Future Improvements
-
-- Mobile application
-- Mobile Money API integration
-- Export reports to Excel/PDF
-- SMS notifications for low stock
-- Barcode & QR inventory tracking
-
----
-
-# 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-
-```
-
-git checkout -b feature/new-feature
-
-```
-
-3. Commit changes
-
-```
-
-git commit -m "Add new feature"
-
-```
-
-4. Push changes
-
-```
-
-git push origin feature/new-feature
-
-```
-
-5. Create Pull Request
-
----
-
-# 📄 License
-
-This project is licensed under the **MIT License**.
-
----
-
-# 👨‍💻 Developer
-
-**Mazin Ahmed Ibrahim**
-
-Full-Stack JavaScript Developer
-
-Technologies:
-
-- Node.js
-- Vue.js
-- MongoDB
-- Express.js
-
-Location: Kampala, Uganda
-
----
-
-# 🏁 Conclusion
-
-The **KGL Enterprise System** transforms Karibu Groceries Ltd from a **manual paper-based workflow** into a **modern digital inventory and sales management platform**.
-
-The system enables:
-
-- Real-time inventory tracking
-- Automated procurement records
-- Secure authentication
-- Multi-branch business management
-- Executive insights for decision making
-```
+Built with ❤️ using Vue.js and Node.js
