@@ -32,7 +32,7 @@ First request may take **30–60 seconds** to wake up.
 
 ## Login Page
 
-![Login Page](screenshots/login.png.png)
+![Login Page](screenshots/login.png)
 
 Secure login with role-based authentication.
 
@@ -40,7 +40,7 @@ Secure login with role-based authentication.
 
 ## Manager Dashboard
 
-![Dashboard](screenshots/dashboard.png.png)
+![Dashboard](screenshots/dashboard.png)
 
 Provides quick access to:
 
@@ -53,7 +53,7 @@ Provides quick access to:
 
 ## Inventory Management
 
-![Inventory](screenshots/inventory.png.png)
+![Inventory](screenshots/inventory.png)
 
 Features:
 
@@ -66,7 +66,7 @@ Features:
 
 ## Procurement Module
 
-![Procurement](screenshots/procurement.png.png)
+![Procurement](screenshots/procurement.png)
 
 Managers can:
 
@@ -78,7 +78,7 @@ Managers can:
 
 ## Sales Module
 
-![Sales](screenshots/sales.png.png)
+![Sales](screenshots/sales.png)
 
 Sales agents can:
 
@@ -90,7 +90,7 @@ Sales agents can:
 
 ## Credit Sales
 
-![Credit](screenshots/credit.png.png)
+![Credit](screenshots/credit.png)
 
 Allows tracking of:
 
@@ -102,7 +102,7 @@ Allows tracking of:
 
 ## Executive Reports
 
-![Reports](screenshots/reports.png.png)
+![Reports](screenshots/reports.png)
 
 Directors can view:
 
